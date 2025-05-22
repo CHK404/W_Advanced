@@ -21,8 +21,8 @@ namespace WpfApp_02_Advanced
         private bool isAngry = true;
 
         //3-2. 이미지 경로(pack URI 방식)
-        private Uri uriAngryImage = new Uri();
-        private Uri uriHappyImage = new Uri();
+        private Uri uriAngryImage = new Uri("pack://application:,,,/Assets/test3.jpg", UriKind.Absolute);
+        private Uri uriHappyImage = new Uri("pack://application:,,,/Assets/test4.jpg", UriKind.Absolute);
         public MainWindow()
         {
             InitializeComponent();
@@ -42,6 +42,9 @@ namespace WpfApp_02_Advanced
 
             //2. Content 초기 이미지 설정
             imgTest2.Source = new BitmapImage(new Uri("Assets/코딩온 홈페이지.png", UriKind.Relative));
+
+            //3-3. Pack URI 초기 이미지 설정
+            imgDisplay.Source = new BitmapImage(uriAngryImage);
         }
 
         //1. Resource C# 버전
@@ -61,7 +64,12 @@ namespace WpfApp_02_Advanced
 
         private void Btn_Change_Image_Click(object sender, RoutedEventArgs e)
         {
+            //3-4. Pack URI 버튼 클릭시 이미지 전환
+            imgDisplay.Source = new BitmapImage(isAngry ? uriAngryImage : uriHappyImage);
 
+            //isAngry 값을 반전시킴(true -> false / false -> true)
+            //-다음 버튼 클릭 시 반대 이미지가 나오도록 상태 전환
+            isAngry = !isAngry;
         }
     }
 }
@@ -169,6 +177,9 @@ namespace WpfApp_02_Advanced
  * 
  * 방법
  * 1. 이미지 추가 -> Resources 폴더
+ * 2.
+ * 3.
+ * 4.
  */
 
 #endregion
