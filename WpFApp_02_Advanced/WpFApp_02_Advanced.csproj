@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\월페이퍼.png" />
+    <None Remove="Assets\코딩온 유튜브.png" />
+    <None Remove="Assets\코딩온 인스타그램.png" />
+    <None Remove="Assets\코딩온 홈페이지.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\월페이퍼.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\코딩온 홈페이지.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\코딩온 유튜브.png" />
+    <Resource Include="Assets\코딩온 인스타그램.png" />
+  </ItemGroup>
+
+</Project>
