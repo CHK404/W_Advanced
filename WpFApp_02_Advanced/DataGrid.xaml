@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="DataGrid" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Button x:Name="openFile" Height="20" Width="75" Content="Open File" 
+                Margin="0,0,700,0" Grid.Row="0" Click="openFile_Click"/>
+        <Button x:Name="getData" Height="20" Width="75" Content="Get Data" 
+                Margin="0,0,500,0" Grid.Row="0" Click="getData_Click"/>
         
+        <TextBlock x:Name="dataName" VerticalAlignment="Center" HorizontalAlignment="Left"
+                Grid.Row="1" />
+
+        <DataGrid x:Name="exDataGrid" Grid.Row="2" />
     </Grid>
 </Window>
