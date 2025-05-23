@@ -1,0 +1,13 @@
+﻿<Window x:Class="WpfApp_02_Advanced.Image_call"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_02_Advanced"
+        mc:Ignorable="d"
+        Title="Image_call" Height="450" Width="800">
+    <Grid>
+        <Button Content="Open File" Click="btn_Open_Click" Height="Auto" Width="Auto"
+                HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ImgButton" />
+    </Grid>
+</Window>
