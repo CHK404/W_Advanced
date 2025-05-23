@@ -42,8 +42,9 @@ namespace WpfApp_02_Advanced
 
                 ImgButton.Background = new ImageBrush(bitmap);
 
-                ImgButton.Width = bitmap.PixelWidth;
-                ImgButton.Height = bitmap.PixelHeight;
+                ImgButton.Width = bitmap.PixelWidth/2;
+                ImgButton.Height = bitmap.PixelHeight/2;
+                ImgButton.Content = " ";
             }
         }
     }

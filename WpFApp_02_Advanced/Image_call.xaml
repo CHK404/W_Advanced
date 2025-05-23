@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Image_call" Height="450" Width="800">
     <Grid>
-        <Button Content="Open File" Click="btn_Open_Click" Height="Auto" Width="Auto"
+        <Button Click="btn_Open_Click" Height="100" Width="100" Content="Open"
                 HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ImgButton" />
     </Grid>
 </Window>
