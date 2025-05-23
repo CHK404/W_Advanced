@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.RightsManagement;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +24,9 @@ namespace WpfApp_02_Advanced
         //3-2. 이미지 경로(pack URI 방식)
         private Uri uriAngryImage = new Uri("pack://application:,,,/Assets/test3.jpg", UriKind.Absolute);
         private Uri uriHappyImage = new Uri("pack://application:,,,/Assets/test4.jpg", UriKind.Absolute);
+
+        //6-1. 전역 변수 설정
+        private List<Person> peopleInfo;    //데이터를 저장하 List<Person>
         public MainWindow()
         {
             InitializeComponent();
@@ -44,7 +48,18 @@ namespace WpfApp_02_Advanced
             imgTest2.Source = new BitmapImage(new Uri("Assets/코딩온 홈페이지.png", UriKind.Relative));
 
             //3-3. Pack URI 초기 이미지 설정
-            imgDisplay.Source = new BitmapImage(uriAngryImage);
+            //imgDisplay.Source = new BitmapImage(uriAngryImage);
+
+            //4-3. 메서드 실행
+            LoadData();
+
+            //5-3. 메서드 실행
+            LoadData2();
+
+            //6-3. 초기 데이터 바인딩 실행
+            LoadData3();
+            singleSelectDataGrid.ItemsSource = peopleInfo;
+            multiSelectDataGrid.ItemsSource = peopleInfo;
         }
 
         //1. Resource C# 버전
@@ -71,6 +86,124 @@ namespace WpfApp_02_Advanced
             //-다음 버튼 클릭 시 반대 이미지가 나오도록 상태 전환
             isAngry = !isAngry;
         }
+
+        //4-2. DataGrid 데이터 입력 메서드
+        private void LoadData()
+        {
+            List<Person> people = new List<Person>()
+            {
+                new Person() { Id = 1, Name = "홍길동", Age = 30, IsActive = true },
+                new Person() { Id = 2, Name = "데이먼", Age = 25, IsActive = false },
+                new Person() { Id = 3, Name = "이영희", Age = 35, IsActive = true }
+            };
+
+            myDataGrid.ItemsSource = people;
+        }
+        //5-2. 메서드 작성
+        private void LoadData2()
+        {
+            List<Person> people2 = new List<Person>()
+            {
+                new Person() { Id = 1, Name = "홍길동", Age = 30, IsActive = true },
+                new Person() { Id = 2, Name = "데이먼", Age = 25, IsActive = false },
+                new Person() { Id = 3, Name = "이영희", Age = 35, IsActive = true }
+            };
+
+            myDataGrid2.ItemsSource = people2;
+        }
+        //6-2. 데이터 메서드 작성
+        private void LoadData3()
+        {
+            peopleInfo = new List<Person>
+            {
+                new Person() { Id = 1, Name = "홍길동", Age = 30, IsActive = true },
+                new Person() { Id = 2, Name = "데이먼", Age = 25, IsActive = false },
+                new Person() { Id = 3, Name = "이영희", Age = 35, IsActive = true },
+                new Person() { Id = 1, Name = "a", Age = 38, IsActive = false },
+                new Person() { Id = 2, Name = "b", Age = 27, IsActive = false },
+                new Person() { Id = 3, Name = "c", Age = 25, IsActive = true }
+            };
+        }
+
+        //6-4. 단일 선택 DataGrid 이벤트 메서드
+        private void singleSelectDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //SelectedItem 속성을 통해 현재 선택된 항목에 접근
+            if (singleSelectDataGrid.SelectedItem is Person selectedPerson)
+            {
+                Console.WriteLine($"단일 선택: ID={selectedPerson.Id}, 이름={selectedPerson.Name}");
+            }
+            else
+            {
+                Console.WriteLine("선택된 항목 없음");
+            }
+
+            /*
+             * is 연산자
+             * -객체가 특정 타입인지 검사할 때 사용 (=타입 확인)
+             * -결과는 bool (True / False)로 반환
+             * -형 변환 x
+             * 
+             * C# 7.0 이후 패턴 매칭 활용 (is + 변수 선언)
+             * -is로 타입 확인 + 형 변환 o
+             * -null 체크를 생략해 as보다 간결
+             */
+
+            /*
+             * singleSelectDataGrid.SelectedItem => Object 타입
+             * ㄴ DataGrid는 어떤 타입의 데이터가 바인딩될지 모르기 때문에,
+             *   가장 일반적인 object 타입으로 반환
+             *   
+             * is Person selectedPerson
+             * -위 타입이 Person 타입 또는 Person 타입으로 변환될 수 있다면(==True)
+             * ㄴ해당 객체를 Person 타입으로 캐스팅하여 selectedPerson이라는 새 변수에 할당
+             * ㄴselectedPerson 변수는 if 내에서만 유효하며 Person 타입으로 안전하게 사용 가능
+             */
+        }
+
+        private void ShowSingleItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (singleSelectDataGrid.SelectedItem is Person selectedPerson)
+            {
+                MessageBox.Show($"단일 선택된 사람: \nID: {selectedPerson.Id}\n" +
+                    $"이름: {selectedPerson.Name}\n나이: {selectedPerson.Age}\n" +
+                    $"활성: {selectedPerson.IsActive}", "단일 선택 정보",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void multiSelectDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //selectedItems 속성을 통해 현재 선택된 모든 항목에 접근
+            if (multiSelectDataGrid.SelectedItems.Count > 0)
+            {
+                //선택된 모든 사람의 이름을 출력
+                string selectedNames = string.Join(", ", multiSelectDataGrid.SelectedItems.Cast<Person>().Select(p => p.Name));
+                Console.WriteLine($"다중 선택({multiSelectDataGrid.SelectedItems.Count} 명): {selectedNames}");
+
+                /*
+                 * multiSelectDataGrid.SelectedItems
+                 * -다중 선택된 항목 가져옴
+                 * -반환 타입은: Object형 List (하나가 아닌 여러개) // {Person, Person, ...}
+                 * 
+                 * Cast<Person>()
+                 * -Person 타입으로 형변환 해야 우리가 만든 클래스의 속성 (Name)을 사용
+                 * ㄴ이 리스트 안에 있는 모든 항목을 Person으로 하나씩 바꿔달라는 의미
+                 * -Cast<>
+                 * ㄴLinQ의 Cast<T> 메서드로 as와 달리 실패시 예외 발생
+                 * ㄴ모든 항목이 Person일 경우에만 사용 가능
+                 * 
+                 */
+            }
+        }
+    }
+    //4-1. DataGrid 외부 클래스 생성
+    public class Person
+    {
+        public int Id { get; set; }
+        public string Name {  get; set; }
+        public int Age {  get; set; }
+        public bool IsActive {  get; set; }
     }
 }
 
@@ -246,6 +379,69 @@ namespace WpfApp_02_Advanced
  *  ㄴ기본적으로 \로 된 경로가 제공
  * 
  * -이를 보통 그대로 코드에 넣기에 @를 붙이는 것이 빠르고 익숙한 방식
+ */
+
+#endregion
+
+#region 2. DataGrid
+
+/*
+ * -데이터를 표(테이블) 형태로 표시하고 조작할 수 있는 유연한 컨트롤
+ *  ㄴ엑셀처럼 행/열이 있는 표 형식의 UI
+ *  
+ * 특징
+ * 1) 데이터 바인딩
+ * ㄴItemsSource 속성을 사용하여 컬렉션(List<T> 등)에 바인딩하면
+ *  해당 컬렉션의 데이터가 자동으로 DataGrid에 표시
+ * 2) 컬럼 자동/수동 생성 가능
+ * 3) 정렬/필터/스크롤 등 기본적인 테이블 기능 지원
+ * 
+ * 쓸때
+ * -테이블 목록을 표 형식으로 보여줄 때
+ * -테이블 데이터를 수정하거나 삭제할 때
+ * 
+ * 속성
+ * -ItemSource: 보여줄 데이터 목록 - 데이터 바인딩을 컬렉션
+ * -AutoGenerateColumns: 자동으로 열 생성 여부(true/false) - 기본값: true
+ * 
+ * 편집 관련 속성
+ * -CanUserAddRows: 사용자가 직접 행 추가 가능 여부(true/false) - 기본값: true
+ * ㄴ빈 행에 데이터를 입력하면 새로운 데이터 항목이 DataGrid의 ItemSource 컬렉션에
+ *  자동으로 추가
+ * -CanUserDeleteRows: 사용자가 직접 행 삭제 가능 여부(true/false) - 기본값: true
+ * -CanUserSortColumns: 열 정렬 허용 여부(true/false) - 기본값: true
+ * -IsReadOnly: DataGrid 전체 읽기 전용 설정 - 기본값: false
+ * -IsReadOnly(컬럼 속성명): 특정 열만 읽기 전용 설정
+ * 
+ * 컬럼 생성 방식
+ * 1) AutoGenerateColumns = true (자동 칼럼 생성)
+ *  ㄴ바인딩된 객체의 속성을 기반으로 칼럼 자동 생성 - 개발 시간 크게 단축
+ *  ㄴstring, int -> Textcolumn / bool -> CheckBoxColumn 자동 매핑
+ *  ㄴ빠르게 개발 가능
+ *  ㄴ열 순서 / 헤더명 / 스타일 제어 어려움
+ *  ㄴ속성명이 그대로 출력
+ * 
+ * 2) AutoGenerateColumns = false (수동 칼럼 정의)
+ *  ㄴDataGrid.Columns 요소들을 수동으로 작성해 칼럼 구성
+ *  ㄴ열의 순서, 너비, 헤더 이름 등 명확하게 설정 가능
+ *  ㄴ텍스트 외에도 CheckBox, ComboBox 등 다양한 형태 사용 가능
+ * 
+ * 사용자 정의 칼럼 속성 종류 - DataGrid.Columns 내부에서 사용 
+ * -DataGridTextColumn: 일반 텍스트 데이터를 표시하고 편집 - Binding 속성으로 데이터 원본의 속성을 지정
+ * -DataGridCheckBoxColumn: bool 타입의 데이터를 체크박스로 표시
+ * -DataGridComboBoxColumn: 드롭다운 선택 컬럼
+ * -DataGridTemplateColumn: 셀의 내용을 원하는 WPF 컨트롤로 구성 가능 (버튼, 이미지 등 삽입 가능) - 가장 유연한 컬럼 타입
+ * 
+ * 행 선택 및 데이터 접근 관련 속성
+ * -SelectionMode: 단일/다중 선택 설정(Single / Extended)
+ * ㄴSingle: 단일 행만 선택 가능
+ * ㄴExtended: Shift/Ctrl 키 사용으로 다중 행 선택 가능
+ * -SelecionUnit:
+ * ㄴCell: 셀 단위로 선택
+ * ㄴFullRow: 행 전체를 선택(일반적)
+ * -SelectedItem: 현재 선택된 단일 항목을 가져옴(단일 선택 모드)
+ * -SelectedItems: 현재 선택된 모든 항목의 컬렉션 가져옴(다중 선택 모드)
+ * -SelectedIndex: 현재 선택된 항목의 인덱스 가져옴
  */
 
 #endregion

@@ -32,6 +32,63 @@
                     <Button Content="Change Image" Click="Btn_Change_Image_Click" />
                 </StackPanel>
             </TabItem>
+            <TabItem Header="DataGrid">
+                <Grid>
+                    <!--5. 기본적인 DataGrid-->
+                    <!--컬럼 자동 생성-->
+                    <DataGrid x:Name="myDataGrid" AutoGenerateColumns="True" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="DataGrid - 컬럼 수동">
+                <Grid>
+                    <!--6. 사용자 정의 DataGrid-->
+                    <!--컬럼 수동 생성-->
+                    <DataGrid x:Name="myDataGrid2" AutoGenerateColumns="False" CanUserAddRows="True" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" IsReadOnly="True" Width="Auto" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Age" Width="Auto" Binding="{Binding Age}" />
+                            <DataGridCheckBoxColumn Header="Active" Width="Auto" Binding="{Binding IsActive}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="DataGrid 선택">
+                <!--7. 데이터 선택 및 접근-->
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--DataGrid-->
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                               Text="단일 선택 DataGrid (Single Selection Mode)"
+                               FontWeight="Bold" FontSize="24" Margin="0,0,0,5" />
+                    <DataGrid x:Name="singleSelectDataGrid" AutoGenerateColumns="True" Grid.Row="0" Grid.Column="1"
+                              SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Margin="0,0,10,0"
+                              SelectionChanged="singleSelectDataGrid_SelectionChanged" />
+                    <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" >
+                        <Button Content="단일 선택 항목 정보" Margin="5" Click="ShowSingleItem_Click" />
+                    </StackPanel>
+                    <Rectangle Grid.Row="2" Grid.ColumnSpan="2" Height="1" Fill="Beige" Margin="0, 20" />
+                    <TextBlock Grid.Row="3" Grid.ColumnSpan="2"
+                               Text="다중 선택 DataGrid (Multi Selection Mode)"
+                               FontWeight="Bold" FontSize="24" Margin="0,0,0,5" />
+                    <DataGrid x:Name="multiSelectDataGrid" Grid.Row="4" Grid.Column="0"
+                              AutoGenerateColumns="True" SelectionMode="Extended" SelectionUnit="FullRow"
+                              IsReadOnly="True" Margin="0,0,10,0" SelectionChanged="multiSelectDataGrid_SelectionChanged" />
+                    <StackPanel Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" >
+                        <Button Content="다중 선택 항목 정보" Margin="5" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
